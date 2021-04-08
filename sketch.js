@@ -1,30 +1,90 @@
-var fixedRect, movingRect;
+var fixedObj1 , fixedObj2 , fixedObj3 , fixedObj4;
+var movingObj;
+var music;
 
-function setup() {
-  createCanvas(1200,800);
-  fixedRect = createSprite(400, 100, 50, 80);
-  fixedRect.shapeColor = "green";
-  fixedRect.debug = true;
-  movingRect = createSprite(400, 800,80,30);
-  movingRect.shapeColor = "green";
-  movingRect.debug = true;
 
-  movingRect.velocityY = -5;
-  fixedRect.velocityY = +5;
+function preload(){
+  
+    music = loadSound("music.mp3");
+
+}
+
+
+function setup(){
+    createCanvas(800,600);
+
+    movingObj = createSprite(random(10,750),300,20,20);
+    movingObj.shapeColor = "white";
+    movingObj.velocityX = 3;
+    movingObj.velocityY = 3;
+
+    fixedObj1 = createSprite(100.590,180,20);
+    fixedObj1.shapeColor = "red";
+    
+    fixedObj2 = createSprite(300.590,180,20);
+    fixedObj2.shapeColor = "green";
+
+    fixedObj3 = createSprite(500.590,180,20);
+    fixedObj3.shapeColor = "blue";
+
+    fixedObj4 = createSprite(700.590,180,20);
+    fixedObj4.shapeColor = "yellow";
+
 }
 
 function draw() {
-  background(0,0,0);  
+    background(rgb(169,169,169));
+   
+   if(movingObj.x < 0) {
+    music.stop()
+    movingObj.velocityX = 3;
+   } 
+   
+   else if(movingObj.x > 800) {
+       music.stop()
+       movingObj.velocityX = -3;
+   
+    }
 
-  if (movingRect.x - fixedRect.x < fixedRect.width/2 + movingRect.width/2
-      && fixedRect.x - movingRect.x < fixedRect.width/2 + movingRect.width/2) {
-    movingRect.velocityX = movingRect.velocityX * (-1);
-    fixedRect.velocityX = fixedRect.velocityX * (-1);
-  }
-  if (movingRect.y - fixedRect.y < fixedRect.height/2 + movingRect.height/2
-    && fixedRect.y - movingRect.y < fixedRect.height/2 + movingRect.height/2){
-    movingRect.velocityY = movingRect.velocityY * (-1);
-    fixedRect.velocityY = fixedRect.velocityY * (-1);
-  }
-  drawSprites();
+
+    if(isTouching(movingObj , fixedObj4)){
+        music.play()
+        movingObj.shapeColor = "yellow" ;
+        bounceOff(movingObj , fixedObj4)
+    }
+
+
+else if(isTouching(movingObj,fixedObj3)){
+     music.stop()
+     movingObj.shapeColor = "blue" ;
+     bounceOff(movingObj,fixedObj3)
 }
+
+else if(isTouching(movingObj,fixedObj2)){
+    music.stop()
+    movingObj.shapeColor = "green" ;
+    bounceOff(movingObj,fixedObj2)
+    movingObj.velocityX = 0;
+    movingObj.velocityY = 0;
+}
+
+else if(isTouching(movingObj,fixedObj1)){
+    music.stop()
+    movingObj.shapeColor = "red" ;
+    bounceOff(movingObj,fixedObj1)
+}
+
+if(movingObj.y < 0) {
+music.stop()
+movingObj.velocityY =  3;
+
+}
+
+drawSprites()
+
+
+
+
+
+}
+
